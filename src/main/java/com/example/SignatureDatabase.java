@@ -11,20 +11,38 @@ public class SignatureDatabase {
     private List<FileSignature> signatures;
     private static final String DATABASE_FILE = "signatures.dat";
 
+    /**
+     * Конструктор для создания базы данных.
+     * Загружает существующую базу данных или создает новую с примерами.
+     */
     public SignatureDatabase() {
         signatures = new ArrayList<>();
         loadDatabase();
     }
 
+    /**
+     * Добавить сигнатуру в базу данных.
+     *
+     * @param signature сигнатура для добавления
+     */
     public void addSignature(FileSignature signature) {
         signatures.add(signature);
         saveDatabase();
     }
 
+    /**
+     * Получить все сигнатуры из базы данных.
+     *
+     * @return список всех сигнатур
+     */
     public List<FileSignature> getSignatures() {
         return new ArrayList<>(signatures);
     }
 
+    /**
+     * Загружает базу данных из файла. Если файл не существует или возникла ошибка,
+     * создается новая база данных с примерами.
+     */
     private void loadDatabase() {
         Path databasePath = Paths.get(DATABASE_FILE);
 
@@ -45,6 +63,9 @@ public class SignatureDatabase {
         }
     }
 
+    /**
+     * Создает стандартные сигнатуры для базы данных.
+     */
     private void createDefaultSignatures() {
         signatures.clear();
 
@@ -76,6 +97,9 @@ public class SignatureDatabase {
         System.out.println("Создано " + signatures.size() + " стандартных сигнатур");
     }
 
+    /**
+     * Сохраняет текущую базу данных в файл.
+     */
     private void saveDatabase() {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(DATABASE_FILE))) {
             oos.writeObject(signatures);

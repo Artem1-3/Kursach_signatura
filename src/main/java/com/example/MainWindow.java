@@ -26,11 +26,17 @@ public class MainWindow extends JFrame {
     private JProgressBar progressBar;
     private JButton searchButton;
 
+    /**
+     * Конструктор для создания главного окна.
+     */
     public MainWindow() {
         database = new SignatureDatabase();
         initializeUI();
     }
 
+    /**
+     * Инициализация пользовательского интерфейса.
+     */
     private void initializeUI() {
         setTitle("Поиск файлов по сигнатуре");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -49,6 +55,11 @@ public class MainWindow extends JFrame {
         setMinimumSize(new Dimension(800, 600));
     }
 
+    /**
+     * Создает верхнюю панель с элементами управления.
+     *
+     * @return JPanel для верхней части окна.
+     */
     private JPanel createTopPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -108,6 +119,11 @@ public class MainWindow extends JFrame {
         return panel;
     }
 
+    /**
+     * Создает центральную панель для отображения результатов поиска.
+     *
+     * @return JPanel для отображения результатов.
+     */
     private JPanel createCenterPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         resultArea = new JTextArea(20, 50);
@@ -117,6 +133,11 @@ public class MainWindow extends JFrame {
         return panel;
     }
 
+    /**
+     * Создает панель состояния с индикатором прогресса.
+     *
+     * @return JPanel для отображения состояния.
+     */
     private JPanel createStatusPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         progressBar = new JProgressBar();
@@ -127,6 +148,9 @@ public class MainWindow extends JFrame {
         return panel;
     }
 
+    /**
+     * Обрабатывает выбор директории для поиска.
+     */
     private void choosePath() {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -135,6 +159,9 @@ public class MainWindow extends JFrame {
         }
     }
 
+    /**
+     * Запускает асинхронный поиск файлов.
+     */
     private void startSearch() {
         searchButton.setEnabled(false);
         progressBar.setVisible(true);
@@ -149,6 +176,9 @@ public class MainWindow extends JFrame {
                 });
     }
 
+    /**
+     * Выполняет поиск файлов с заданной сигнатурой.
+     */
     private void searchFiles() {
         String path = pathField.getText();
         if (path.isEmpty()) {
@@ -218,6 +248,11 @@ public class MainWindow extends JFrame {
         }
     }
 
+    /**
+     * Обновляет текстовое поле результатов.
+     *
+     * @param text Текст для добавления.
+     */
     private void updateResultArea(String text) {
         SwingUtilities.invokeLater(() -> resultArea.append(text));
     }
@@ -229,6 +264,9 @@ public class MainWindow extends JFrame {
         });
     }
 
+    /**
+     * Открывает окно для добавления новой сигнатуры.
+     */
     private void addSignature() {
         JDialog dialog = new JDialog(this, "Добавление сигнатуры", true);
         dialog.setLayout(new GridLayout(4, 2));
@@ -272,6 +310,9 @@ public class MainWindow extends JFrame {
         dialog.setVisible(true);
     }
 
+    /**
+     * Обновляет список сигнатур в выпадающем меню.
+     */
     private void updateSignatureCombo() {
         signatureCombo.removeAllItems();
         for (FileSignature signature : database.getSignatures()) {
@@ -279,6 +320,11 @@ public class MainWindow extends JFrame {
         }
     }
 
+    /**
+     * Точка входа в приложение.
+     *
+     * @param args аргументы командной строки.
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new MainWindow().setVisible(true);
